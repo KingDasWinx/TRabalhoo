@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Matemática Divertida - Tabuada e Estatística</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h1,
+      h2 {
+        color: #2c3e50;
+        text-align: center;
+      }
+
+      .tab-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        justify-content: center;
+      }
+
+      .tab-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background-color: #9b59b6;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .tab-button:hover {
+        background-color: #8e44ad;
+      }
+
+      .tab-button.active {
+        background-color: #8e44ad;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #34495e;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+        border: 2px solid #bdc3c7;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #e74c3c;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      button:hover {
+        background-color: #c0392b;
+      }
+
+      .result {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f9ebea;
+        border-radius: 6px;
+        font-size: 16px;
+        color: #c0392b;
+      }
+
+      .tabuada-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .tabuada-item {
+        background-color: #f9ebea;
+        padding: 10px;
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .stats-box {
+        background-color: #f9ebea;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Matemática Divertida - Tabuada e Estatística</h1>
+
+      <div class="tab-buttons">
+        <button class="tab-button active" onclick="showTab('tabuada')">
+          Tabuada
+        </button>
+        <button class="tab-button" onclick="showTab('stats')">
+          Média, Moda e Mediana
+        </button>
+      </div>
+
+      <div id="tabuada" class="tab-content card active">
+        <h2>Tabuada</h2>
+        <div class="input-group">
+          <label>Digite um número (1 a 10):</label>
+          <input type="number" id="tabuada-input" min="1" max="10" value="1" />
+        </div>
+        <button onclick="gerarTabuada()">Gerar Tabuada</button>
+        <button onclick="gerarTodasTabuadas()">Gerar Todas as Tabuadas</button>
+        <div id="tabuada-result" class="tabuada-grid"></div>
+      </div>
+
+      <div id="stats" class="tab-content card">
+        <h2>Média, Moda e Mediana</h2>
+        <div class="input-group">
+          <label
+            >Digite os números separados por vírgula (exemplo:
+            2,4,6,8,8,10):</label
+          >
+          <input type="text" id="stats-input" placeholder="2,4,6,8,8,10" />
+        </div>
+        <button onclick="calcularEstatisticas()">Calcular</button>
+        <div class="result">
+          <div id="media" class="stats-box"></div>
+          <div id="moda" class="stats-box"></div>
+          <div id="mediana" class="stats-box"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showTab(tabName) {
+        document.querySelectorAll(".tab-content").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+        document.querySelectorAll(".tab-button").forEach((button) => {
+          button.classList.remove("active");
+        });
+
+        document.getElementById(tabName).classList.add("active");
+        document
+          .querySelector(`button[onclick="showTab('${tabName}')"]`)
+          .classList.add("active");
+      }
+
+      function gerarTabuada() {
+        const numero = parseInt(document.getElementById("tabuada-input").value);
+        const resultDiv = document.getElementById("tabuada-result");
+        resultDiv.innerHTML = "";
+
+        if (numero >= 1 && numero <= 10) {
+          const tabuadaDiv = document.createElement("div");
+          tabuadaDiv.className = "tabuada-item";
+          let html = `<h3>Tabuada do ${numero}</h3>`;
+          for (let i = 1; i <= 10; i++) {
+            html += `<div>${numero} × ${i} = ${numero * i}</div>`;
+          }
+          tabuadaDiv.innerHTML = html;
+          resultDiv.appendChild(tabuadaDiv);
+        }
+      }
+
+      function gerarTodasTabuadas() {
+        const resultDiv = document.getElementById("tabuada-result");
+        resultDiv.innerHTML = "";
+
+        for (let numero = 1; numero <= 10; numero++) {
+          const tabuadaDiv = document.createElement("div");
+          tabuadaDiv.className = "tabuada-item";
+          let html = `<h3>Tabuada do ${numero}</h3>`;
+          for (let i = 1; i <= 10; i++) {
+            html += `<div>${numero} × ${i} = ${numero * i}</div>`;
+          }
+          tabuadaDiv.innerHTML = html;
+          resultDiv.appendChild(tabuadaDiv);
+        }
+      }
+
+      function calcularEstatisticas() {
+        const numeros = document
+          .getElementById("stats-input")
+          .value.split(",")
+          .map((n) => parseFloat(n.trim()))
+          .filter((n) => !isNaN(n))
+          .sort((a, b) => a - b);
+
+        if (numeros.length === 0) {
+          alert("Por favor, digite números válidos");
+          return;
+        }
+
+        // Média
+        const media = numeros.reduce((a, b) => a + b) / numeros.length;
+        document.getElementById("media").innerHTML = `
+                <strong>Média:</strong> ${media.toFixed(2)}
+                <br><small>Soma todos os números e divide pela quantidade</small>
+            `;
+
+        // Moda
+        const contagem = {};
+        let maxFreq = 0;
+        numeros.forEach((num) => {
+          contagem[num] = (contagem[num] || 0) + 1;
+          maxFreq = Math.max(maxFreq, contagem[num]);
+        });
+        const moda = Object.entries(contagem)
+          .filter(([_, freq]) => freq === maxFreq)
+          .map(([num, _]) => num);
+        document.getElementById("moda").innerHTML = `
+                <strong>Moda:</strong> ${moda.join(", ")}
+                <br><small>Número(s) que mais aparece(m)</small>
+            `;
+
+        // Mediana
+        const meio = Math.floor(numeros.length / 2);
+        const mediana =
+          numeros.length % 2 === 0
+            ? (numeros[meio - 1] + numeros[meio]) / 2
+            : numeros[meio];
+        document.getElementById("mediana").innerHTML = `
+                <strong>Mediana:</strong> ${mediana}
+                <br><small>Número do meio quando ordenados</small>
+            `;
+      }
+    </script>
+  </body>
+</html>
